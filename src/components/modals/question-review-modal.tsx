@@ -203,21 +203,24 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
 
                 {/* Tags and Reviews */}
                 <div className="flex items-center gap-3 mb-6 mt-5">
-                    <span className="truncate max-w-[150px] px-3 py-2 bg-[#A2A2A2] text-white rounded border-[#747474] text-sm">
-                        {questionData?.categoryName || "Category  Name"}
-                    </span>
+                    <Tooltip title={questionData?.categoryName}>
+                        <span className="truncate max-w-[150px] px-3 py-2 bg-[#A2A2A2] text-white rounded border-[#747474] text-sm">
+                            {questionData?.categoryName || "Category  Name"}
+                        </span>
+                    </Tooltip>
                     <span className={`px-3 py-2 rounded capitalize text-sm border ${getDifficultyColor(questionData?.difficulty)}`}>
                         {questionData?.difficulty}
                     </span>
-                    <div className="flex items-center px-3 py-2 gap-2 border rounded flex-1">
-                        <span className="text-sm text-gray-600">Reviews:</span>
-                        {questionData?.reviews?.length > 0 ? (
+                    <div className="flex items-center justify-between px-3 py-2 gap-2 border rounded flex-1">
+                        {questionData.reviews?.length > 0 ? (
                             questionData.reviews.map((review: any, index: number) => (
-                                <div key={index} className="flex items-center gap-1">
-                                    <span className="text-sm text-gray-700">{review.reviewerName}</span>
-                                    {review.type === 'correct' && <RightIcon />}
-                                    {review.type === 'incorrect' && <WrongIcon />}
-                                    {review.type === 'ambiguity' && <AmbiguousIcon />}
+                                <div key={index} className="flex  items-center gap-1">
+                                    <Tooltip title={review.name}>
+                                        <span className="text-sm text-gray-700 max-w-[70px] truncate">{review.name}</span>
+                                    </Tooltip>
+                                    {review.decession === 'correct' && <RightIcon />}
+                                    {review.decession === 'incorrect' && <WrongIcon />}
+                                    {review.decession === 'ambiguity' && <AmbiguousIcon />}
                                 </div>
                             ))
                         ) : (
