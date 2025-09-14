@@ -1,0 +1,26 @@
+::-webkit-scrollbar {
+  width: 0.35rem;
+  height: 0.25rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #D9D9D9;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #B5B5B9;
+  border-radius: 100vh;
+  border: 0.18rem solid #B5B5B9;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #B5B5B9;
+}
+
+.custom-spin .ant-spin-dot i {
+  background-color: white;
+}
