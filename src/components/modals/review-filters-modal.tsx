@@ -38,9 +38,9 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     ];
 
     const reviewTypesOptions: FilterOption[] = [
-        { label: 'Right', value: 'right', count: 3 },
-        { label: 'Wrong', value: 'wrong', count: 1 },
-        { label: 'Ambiguous', value: 'ambiguous', count: 0 }
+        { label: 'Right', value: 'Correct', count: 3 },
+        { label: 'Wrong', value: 'Incorrect', count: 1 },
+        { label: 'Ambiguous', value: 'Ambiguous', count: 0 }
     ];
 
     const handleCheckboxChange = (type: 'reviewsCount' | 'reviewTypes', value: string, checked: boolean) => {
@@ -94,7 +94,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
                                         <span className="text-sm text-gray-700">{option.label}</span>
                                     </Checkbox>
                                 </div>
-                                <span className="text-sm text-gray-500">({option.count})</span>
+                                {/* <span className="text-sm text-gray-500">({option.count})</span> */}
                             </div>
                         ))}
                     </div>
@@ -118,7 +118,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
                                         <span className="text-sm text-gray-700">{option.label}</span>
                                     </Checkbox>
                                 </div>
-                                <span className="text-sm text-gray-500">({option.count})</span>
+                                {/* <span className="text-sm text-gray-500">({option.count})</span> */}
                             </div>
                         ))}
                     </div>

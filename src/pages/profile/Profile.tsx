@@ -4,6 +4,7 @@ import { IUserModel } from "auth";
 import * as authHelper from '../../auth/core/auth-helpers';
 import { showErrorMessage, showSuccessMessage } from "utils/messageUtils";
 import useChangePassword from "auth/core/hooks/use-change-password";
+import { ROLESLABEL } from "utils/Enums";
 
 const Profile: React.FC = () => {
     const currentUser: IUserModel | undefined = authHelper.getUser();
@@ -87,7 +88,7 @@ const Profile: React.FC = () => {
                 </div>
                 <div>
                     <p className="text-medium-gray">User Role</p>
-                    <p className="mt-5 capitalize">{currentUser?.role || "-"}</p>
+                    <p className="mt-5">{ROLESLABEL[currentUser?.role as keyof typeof ROLESLABEL]}</p>
                 </div>
                 <div className="">
                     <p className="text-medium-gray">Status</p>

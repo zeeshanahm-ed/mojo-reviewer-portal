@@ -32,10 +32,9 @@ const QuestionsReview = () => {
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
-    lang: currentLang,
   });
   const { allCategoriesData } = useGetCategoriesForDropDown();
-  const { allQuestionsData, pagination, isLoading, refetch } = useGetAllQuestions({});
+  const { allQuestionsData, pagination, isLoading, refetch } = useGetAllQuestions(params);
 
 
   const [state, setState] = useState<StateType>({
@@ -95,6 +94,8 @@ const QuestionsReview = () => {
 
   const handleApplyReviewFilters = (filters: ReviewFilters) => {
     setReviewFilters(filters);
+    console.log(filters)
+    setParams(prev => ({ ...prev, page: 1, filterByReviewsStatus: filters.reviewTypes }))
   };
 
   const handleClearReviewFilters = () => {
@@ -267,7 +268,7 @@ const QuestionsReview = () => {
       <Pagination
         className="mt-5 justify-center text-white"
         current={params?.page}
-        pageSize={pagination?.limit}
+        pageSize={params?.limit}
         total={pagination?.total}
         onChange={handlePageChange}
         showSizeChanger={false}
