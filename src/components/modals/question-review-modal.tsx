@@ -206,7 +206,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
 
                 {/* Tags and Reviews */}
                 <div className="flex items-center gap-3 mb-6 mt-5">
-                    <Tooltip title={questionData?.categoryName}>
+                    <Tooltip title={getCategoryName()}>
                         <span className="truncate max-w-[150px] px-3 py-2 bg-[#A2A2A2] text-white rounded border-[#747474] text-sm">
                             {getCategoryName()}
                         </span>
