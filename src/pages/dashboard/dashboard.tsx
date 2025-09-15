@@ -152,16 +152,13 @@ const QuestionsReview = () => {
               <td className="p-4">
                 <div className="flex items-center gap-2">
                   <span className="text-gray-700">{record.reviews.length + "/3"}</span>
-                  <div className="flex gap-1">
+                  <div className="flex items-center gap-1">
                     {record?.reviews.map((reviewer: any, index: number) => {
-                      const hasCorrectdecision = reviewer.decision.toLowerCase() === "correct";
-                      const hasInCorrectdecision = reviewer.decision.toLowerCase() === "incorrect";
-                      const hasAmbiguitydecision = reviewer.decision.toLowerCase() === "ambiguity";
                       return (
                         <span key={index}>
-                          {hasCorrectdecision && <RightIcon />}
-                          {hasInCorrectdecision && <WrongIcon />}
-                          {hasAmbiguitydecision && <AmbiguousIcon />}
+                          {reviewer.decision === 'Correct' && <RightIcon />}
+                          {reviewer.decision === 'Incorrect' && <WrongIcon />}
+                          {reviewer.decision === 'Ambiguous' && <AmbiguousIcon />}
                         </span>
                       )
                     })}

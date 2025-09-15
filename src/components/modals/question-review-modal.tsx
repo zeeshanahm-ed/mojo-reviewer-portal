@@ -71,6 +71,9 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
     const getCorrectAnswer = () => {
         return questionData?.correctAnswer?.[currentLanguage] || questionData?.correctAnswer?.en || '';
     };
+    const getCategoryName = () => {
+        return questionData?.categoryName?.[currentLanguage] || questionData?.categoryName?.en || 'Category  Name';
+    };
 
     const getDifficultyColor = (difficulty: string) => {
         switch (difficulty?.toLowerCase()) {
@@ -157,7 +160,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
             categoryId: questionData?.categoryId,
             questionId: questionData?.questionId,
             reason: reviewData?.reviewType === "ambiguity" ? reviewData.explanation : "",
-            decision: reviewData.reviewType === "right" ? "Correct" : reviewData.reviewType === "wrong" ? "Incorrect" : "Ambiguity"
+            decision: reviewData.reviewType === "right" ? "Correct" : reviewData.reviewType === "wrong" ? "Incorrect" : "Ambiguous"
         }
 
         addReviewMutate(body, {
@@ -205,22 +208,22 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                 <div className="flex items-center gap-3 mb-6 mt-5">
                     <Tooltip title={questionData?.categoryName}>
                         <span className="truncate max-w-[150px] px-3 py-2 bg-[#A2A2A2] text-white rounded border-[#747474] text-sm">
-                            {questionData?.categoryName || "Category  Name"}
+                            {getCategoryName()}
                         </span>
                     </Tooltip>
                     <span className={`px-3 py-2 rounded capitalize text-sm border ${getDifficultyColor(questionData?.difficulty)}`}>
                         {questionData?.difficulty}
                     </span>
-                    <div className="flex items-center justify-between px-3 py-2 gap-2 border rounded flex-1">
+                    <div className="flex items-center  px-3 py-2 gap-3 border rounded flex-1">
                         {questionData.reviews?.length > 0 ? (
                             questionData.reviews.map((review: any, index: number) => (
                                 <div key={index} className="flex  items-center gap-1">
-                                    <Tooltip title={review.name}>
-                                        <span className="text-sm text-gray-700 max-w-[70px] truncate">{review.name}</span>
+                                    <Tooltip title={review.reviewerName}>
+                                        <span className="text-sm text-gray-700 max-w-[110px] truncate">{review.reviewerName}</span>
                                     </Tooltip>
-                                    {review.decession === 'correct' && <RightIcon />}
-                                    {review.decession === 'incorrect' && <WrongIcon />}
-                                    {review.decession === 'ambiguity' && <AmbiguousIcon />}
+                                    {review.decision === 'Correct' && <RightIcon />}
+                                    {review.decision === 'Incorrect' && <WrongIcon />}
+                                    {review.decision === 'Ambiguous' && <AmbiguousIcon />}
                                 </div>
                             ))
                         ) : (
