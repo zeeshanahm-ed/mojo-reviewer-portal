@@ -4,15 +4,15 @@ import { Select, Button, Divider, Empty, Pagination, Tooltip } from 'antd';
 import useGetCategoriesForDropDown from './core/hooks/useGetCategoriesForDropDown';
 import useGetAllQuestions from './core/hooks/useGetAllQuestions';
 import { getCurrentLanguage } from 'helpers/CustomHelpers';
+import FallbackLoader from 'components/core-ui/fallback-loader/FallbackLoader';
+import ReviewFiltersModal from 'components/modals/review-filters-modal';
+import QuestionReviewModal from 'components/modals/question-review-modal';
 //icons
 // import { CheckOutlined, CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import FilterIcon from "../../assets/icons/filter-icon.svg?react";
 import WrongIcon from "../../assets/icons/wrong-status-icon.svg?react";
 import RightIcon from "../../assets/icons/right-status-icon.svg?react";
 import AmbiguousIcon from "../../assets/icons/ambigous-status-icon.svg?react";
-import FallbackLoader from 'components/core-ui/fallback-loader/FallbackLoader';
-import ReviewFiltersModal from 'components/modals/review-filters-modal';
-import QuestionReviewModal from 'components/modals/question-review-modal';
 
 const { Option } = Select;
 
@@ -44,7 +44,7 @@ const QuestionsReview = () => {
   });
 
   const [isReviewFiltersModalOpen, setIsReviewFiltersModalOpen] = useState(false);
-  const [reviewFilters, setReviewFilters] = useState<ReviewFilters>({
+  const [_reviewFilters, setReviewFilters] = useState<ReviewFilters>({
     reviewsCount: [],
     reviewTypes: []
   });

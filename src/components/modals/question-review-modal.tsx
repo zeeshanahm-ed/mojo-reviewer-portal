@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Modal, Input, Tooltip, Divider } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import { showErrorMessage, showSuccessMessage } from 'utils/messageUtils';
+import useAddReview from 'pages/dashboard/core/hooks/useAddReview';
+import FallbackLoader from 'components/core-ui/fallback-loader/FallbackLoader';
 //icons
 import WrongIcon from "../../assets/icons/wrong-status-icon.svg?react";
 import RightIcon from "../../assets/icons/right-status-icon.svg?react";
 import AmbiguousIcon from "../../assets/icons/ambigous-status-icon.svg?react";
 import QuestionIcon from "../../assets/icons/question-icon.svg?react"
-import { showErrorMessage, showSuccessMessage } from 'utils/messageUtils';
-import useAddReview from 'pages/dashboard/core/hooks/useAddReview';
-import FallbackLoader from 'components/core-ui/fallback-loader/FallbackLoader';
 
 const { TextArea } = Input;
 

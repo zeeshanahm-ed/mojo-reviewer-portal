@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input, Button, Checkbox, Divider } from "antd";
 import { IUserModel } from "auth";
 import * as authHelper from '../../auth/core/auth-helpers';

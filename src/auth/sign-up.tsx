@@ -3,13 +3,13 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Alert, Button, Form, Input } from 'antd';
+import useSignUp from './core/hooks/use-sign-up';
 
 import Container from 'components/core-ui/container/container';
 
 import LockIcon from '../assets/icons/lock.svg?react';
 import MailIcon from '../assets/icons/mail.svg?react';
 import UserIcon from '../assets/icons/user.svg?react';
-import useSignUp from './core/hooks/use-sign-up';
 
 function SignUp() {
   const navigate = useNavigate();
