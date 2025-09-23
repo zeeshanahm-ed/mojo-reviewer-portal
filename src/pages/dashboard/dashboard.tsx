@@ -33,6 +33,11 @@ const QuestionsReview = () => {
     page: 1,
     limit: 10,
   });
+  const [filters, setFilters] = useState<ReviewFilters>({
+    reviewsCount: [],
+    reviewTypes: []
+  });
+
   const { allCategoriesData } = useGetCategoriesForDropDown();
   const { allQuestionsData, pagination, isLoading, refetch } = useGetAllQuestions(params);
 
@@ -95,14 +100,21 @@ const QuestionsReview = () => {
   const handleApplyReviewFilters = (filters: ReviewFilters) => {
     setReviewFilters(filters);
     console.log(filters)
-    setParams(prev => ({ ...prev, page: 1, filterByReviewsStatus: filters.reviewTypes }))
+    if (filters.reviewsCount.length > 0) {
+      setParams(prev => ({ ...prev, page: 1, reviewCount: filters.reviewsCount }))
+    }
+    if (filters.reviewTypes.length > 0) {
+      setParams(prev => ({ ...prev, page: 1, reviewTypes: filters.reviewTypes }))
+    }
   };
 
   const handleClearReviewFilters = () => {
+    setParams(prev => ({ ...prev, page: 1, reviewCount: [], reviewTypes: [] }))
     setReviewFilters({
       reviewsCount: [],
       reviewTypes: []
     });
+    setIsReviewFiltersModalOpen(false)
   };
 
   const handleReviewQuestion = (question: any) => {
@@ -276,6 +288,8 @@ const QuestionsReview = () => {
         onClose={() => setIsReviewFiltersModalOpen(false)}
         onApplyFilters={handleApplyReviewFilters}
         onClearFilters={handleClearReviewFilters}
+        filters={filters}
+        setFilters={setFilters}
       />
 
       {/* Question Review Modal */}

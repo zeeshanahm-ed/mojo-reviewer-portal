@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Checkbox, Divider, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -7,6 +7,8 @@ interface ReviewFiltersModalProps {
     onClose: () => void;
     onApplyFilters: (filters: ReviewFilters) => void;
     onClearFilters: () => void;
+    filters: any,
+    setFilters: any,
 }
 
 interface ReviewFilters {
@@ -24,12 +26,10 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     open,
     onClose,
     onApplyFilters,
-    onClearFilters
+    onClearFilters,
+    filters,
+    setFilters,
 }) => {
-    const [filters, setFilters] = useState<ReviewFilters>({
-        reviewsCount: [],
-        reviewTypes: []
-    });
 
     const reviewsCountOptions: FilterOption[] = [
         { label: '0 Reviews', value: '0', count: 3 },
@@ -44,11 +44,11 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     ];
 
     const handleCheckboxChange = (type: 'reviewsCount' | 'reviewTypes', value: string, checked: boolean) => {
-        setFilters(prev => ({
+        setFilters((prev: any) => ({
             ...prev,
             [type]: checked
                 ? [...prev[type], value]
-                : prev[type].filter(item => item !== value)
+                : prev[type].filter((item: any) => item !== value)
         }));
     };
 
