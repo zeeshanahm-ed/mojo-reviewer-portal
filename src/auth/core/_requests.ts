@@ -12,7 +12,11 @@ const RESET_PASS_CODE = '/auth/reset-password';
 const CHANGE_PASS_CODE = '/auth/update-password';
 
 export async function login(body: ISignInForm) {
-  return api.post(SIGNIN_URL, body);
+  return api.post(SIGNIN_URL, body, {
+    headers: {
+      "x-login-role": "reviewer"
+    },
+  });
 }
 
 export function signUp(body: ISignUpForm) {

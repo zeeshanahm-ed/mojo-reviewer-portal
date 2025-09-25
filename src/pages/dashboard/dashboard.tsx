@@ -33,6 +33,7 @@ const QuestionsReview = () => {
     page: 1,
     limit: 10,
   });
+  // UI working copy for modal; actual applied filters stored in _reviewFilters
   const [filters, setFilters] = useState<ReviewFilters>({
     reviewsCount: [],
     reviewTypes: []
@@ -49,6 +50,7 @@ const QuestionsReview = () => {
   });
 
   const [isReviewFiltersModalOpen, setIsReviewFiltersModalOpen] = useState(false);
+  // last applied filters that drive API params
   const [_reviewFilters, setReviewFilters] = useState<ReviewFilters>({
     reviewsCount: [],
     reviewTypes: []
@@ -97,24 +99,30 @@ const QuestionsReview = () => {
     setParams(prev => ({ ...prev, page }));
   };
 
-  const handleApplyReviewFilters = (filters: ReviewFilters) => {
-    setReviewFilters(filters);
-    console.log(filters)
-    if (filters.reviewsCount.length > 0) {
-      setParams(prev => ({ ...prev, page: 1, reviewCount: filters.reviewsCount }))
-    }
-    if (filters.reviewTypes.length > 0) {
-      setParams(prev => ({ ...prev, page: 1, reviewTypes: filters.reviewTypes }))
-    }
+  const handleApplyReviewFilters = (filtersToApply: ReviewFilters) => {
+    // Persist last applied filters
+    setReviewFilters(filtersToApply);
+    // Update UI copy so modal shows applied values next open
+    setFilters(filtersToApply);
+    // Build comma-separated strings for API
+    const reviewCountCsv = (filtersToApply.reviewsCount || []).join(',');
+    const reviewTypesCsv = (filtersToApply.reviewTypes || []).join(',');
+    setParams(prev => ({
+      ...prev,
+      page: 1,
+      reviewCount: reviewCountCsv || undefined,
+      filterByReviewsStatus: reviewTypesCsv || undefined,
+    }));
   };
 
   const handleClearReviewFilters = () => {
-    setParams(prev => ({ ...prev, page: 1, reviewCount: [], reviewTypes: [] }))
-    setReviewFilters({
-      reviewsCount: [],
-      reviewTypes: []
-    });
-    setIsReviewFiltersModalOpen(false)
+    // Reset params for API
+    setParams(prev => ({ ...prev, page: 1, reviewCount: undefined, filterByReviewsStatus: undefined }));
+    // Clear last applied and UI modal state
+    const cleared = { reviewsCount: [], reviewTypes: [] };
+    setReviewFilters(cleared);
+    setFilters(cleared);
+    setIsReviewFiltersModalOpen(false);
   };
 
   const handleReviewQuestion = (question: any) => {
@@ -251,7 +259,11 @@ const QuestionsReview = () => {
             variant='text'
             icon={<FilterIcon className='mt-1' />}
             className="h-10 hover:text-black"
-            onClick={() => setIsReviewFiltersModalOpen(true)}
+            onClick={() => {
+              // When opening modal, ensure UI working copy reflects last applied filters
+              setFilters(_reviewFilters);
+              setIsReviewFiltersModalOpen(true);
+            }}
           >
             Review Filters
           </Button>
@@ -289,7 +301,6 @@ const QuestionsReview = () => {
         onApplyFilters={handleApplyReviewFilters}
         onClearFilters={handleClearReviewFilters}
         filters={filters}
-        setFilters={setFilters}
       />
 
       {/* Question Review Modal */}

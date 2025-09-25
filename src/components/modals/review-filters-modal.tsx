@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Divider, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -7,8 +7,7 @@ interface ReviewFiltersModalProps {
     onClose: () => void;
     onApplyFilters: (filters: ReviewFilters) => void;
     onClearFilters: () => void;
-    filters: any,
-    setFilters: any,
+    filters: ReviewFilters,
 }
 
 interface ReviewFilters {
@@ -28,8 +27,15 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     onApplyFilters,
     onClearFilters,
     filters,
-    setFilters,
 }) => {
+
+    const [tempFilters, setTempFilters] = useState<ReviewFilters>({ reviewsCount: [], reviewTypes: [] });
+
+    useEffect(() => {
+        if (open) {
+            setTempFilters(filters || { reviewsCount: [], reviewTypes: [] });
+        }
+    }, [open, filters]);
 
     const reviewsCountOptions: FilterOption[] = [
         { label: '0 Reviews', value: '0', count: 3 },
@@ -44,7 +50,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     ];
 
     const handleCheckboxChange = (type: 'reviewsCount' | 'reviewTypes', value: string, checked: boolean) => {
-        setFilters((prev: any) => ({
+        setTempFilters((prev) => ({
             ...prev,
             [type]: checked
                 ? [...prev[type], value]
@@ -53,12 +59,12 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     };
 
     const handleApplyFilters = () => {
-        onApplyFilters(filters);
+        onApplyFilters(tempFilters);
         onClose();
     };
 
     const handleClearFilters = () => {
-        setFilters({
+        setTempFilters({
             reviewsCount: [],
             reviewTypes: []
         });
@@ -87,7 +93,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
                             <div key={option.value} className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <Checkbox
-                                        checked={filters.reviewsCount.includes(option.value)}
+                                        checked={tempFilters.reviewsCount.includes(option.value)}
                                         onChange={(e) => handleCheckboxChange('reviewsCount', option.value, e.target.checked)}
                                         className="mr-3"
                                     >
@@ -111,7 +117,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
                             <div key={option.value} className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <Checkbox
-                                        checked={filters.reviewTypes.includes(option.value)}
+                                        checked={tempFilters.reviewTypes.includes(option.value)}
                                         onChange={(e) => handleCheckboxChange('reviewTypes', option.value, e.target.checked)}
                                         className="mr-3"
                                     >
