@@ -98,11 +98,11 @@ function Verification() {
 
   return (
     <Container>
-      <section className='flex justify-center  w-full h-screen  bg-white relative pt-52 font-urbanist'>
+      <section className='flex justify-center  w-full h-screen items-center  bg-white relative font-urbanist'>
         <div className='w-full flex flex-col max-w-md p-8 space-y-6'>
           {/* Logo and title */}
           <div className="mb-10 text-center">
-            <h1 className="text-7xl font-bold tracking-widest font-secondary">MOJO</h1>
+            <h1 className="text-[80px] font-bold tracking-widest font-secondary">MOJO</h1>
             <h2 className="text-2xl font-medium -mt-2"> Verify OTP</h2>
             <h2 className="text-center text-gray-500 text-base mt-2">
               Enter 6 digit OTP you received on email
@@ -132,7 +132,7 @@ function Verification() {
               <Button
                 type='primary'
                 onClick={handleVerifyOTP}
-                className='h-14 w-full bg-button-blue'
+                className='h-12 w-full bg-button-blue'
                 disabled={otp?.length !== 6}
               >
                 Submit
@@ -140,13 +140,13 @@ function Verification() {
             </Form.Item>
 
             <div className='flex flex-row gap-x-2 justify-center'>
-              <Button onClick={handleBack} className='h-14 w-full'>
+              <Button onClick={handleBack} className='h-12 w-full'>
                 Cancel
               </Button>
               <Button
                 type='primary'
                 onClick={handleResendOtp}
-                className='h-14 mb-5 w-full text-white disabled:text-white disabled:scale-100 disabled:bg-secondary'
+                className='h-12 mb-5 w-full text-white disabled:text-white disabled:scale-100 disabled:bg-secondary'
                 disabled={resendDisabled}
               >
                 {resendDisabled ? `Resend OTP (${countdown})` : 'Resend OTP'}
