@@ -7,14 +7,14 @@ import { getCurrentLanguage } from 'helpers/CustomHelpers';
 import FallbackLoader from 'components/core-ui/fallback-loader/FallbackLoader';
 import ReviewFiltersModal from 'components/modals/review-filters-modal';
 import QuestionReviewModal from 'components/modals/question-review-modal';
+import { useDirection } from 'hooks/useGetDirection';
+import { useTranslation } from 'react-i18next';
 //icons
 // import { CheckOutlined, CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import FilterIcon from "../../assets/icons/filter-icon.svg?react";
 import WrongIcon from "../../assets/icons/wrong-status-icon.svg?react";
 import RightIcon from "../../assets/icons/right-status-icon.svg?react";
 import AmbiguousIcon from "../../assets/icons/ambigous-status-icon.svg?react";
-
-const { Option } = Select;
 
 interface StateType {
   selectedCategory: string,
@@ -28,6 +28,8 @@ interface ReviewFilters {
 }
 
 const QuestionsReview = () => {
+  const { t } = useTranslation();
+  const direction = useDirection();
   const currentLang = getCurrentLanguage();
   const [params, setParams] = useState({
     page: 1,
@@ -59,6 +61,13 @@ const QuestionsReview = () => {
   const [isQuestionReviewModalOpen, setIsQuestionReviewModalOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<any>(null);
 
+  // Difficulty options array
+  const difficultyOptions = [
+    { value: "easy", label: t('Easy') },
+    { value: "medium", label: t('Medium') },
+    { value: "hard", label: t('Hard') }
+  ];
+
   useEffect(() => {
     if (!allCategoriesData?.length) return;
     const newOptions = allCategoriesData?.map((cat: any) => ({
@@ -86,13 +95,13 @@ const QuestionsReview = () => {
 
   // Table headers configuration
   const tableHeaders = [
-    { title: 'User ID', key: 'userId', className: "text-start" },
-    { title: 'User Name', key: 'userName', className: "text-start" },
-    { title: 'Question', key: 'question', className: "text-start" },
-    { title: 'Category', key: 'category', className: "text-start" },
-    { title: 'Difficulty', key: 'difficulty', className: "text-start" },
-    { title: 'Reviews', key: 'reviews', className: "text-start" },
-    { title: 'Action', key: 'action', className: "text-start" },
+    { title: t('User ID'), key: 'userId', className: "text-start" },
+    { title: t('User Name'), key: 'userName', className: "text-start" },
+    { title: t('Question'), key: 'question', className: "text-start" },
+    { title: t('Category'), key: 'category', className: "text-start" },
+    { title: t('Difficulty'), key: 'difficulty', className: "text-start" },
+    { title: t('Reviews'), key: 'reviews', className: "text-start" },
+    { title: t('Action'), key: 'action', className: "text-start" },
   ];
 
   const handlePageChange = (page: number) => {
@@ -190,7 +199,7 @@ const QuestionsReview = () => {
                   type="primary"
                   onClick={() => handleReviewQuestion(record)}
                 >
-                  Review
+                  {t('Review')}
                 </Button>
               </td>
             </tr>
@@ -205,10 +214,10 @@ const QuestionsReview = () => {
       {/* Header Section */}
       <div className="mb-6">
         <h1 className="text-2xl text-gray-900 mb-2">
-          Questions to review
+          {t('Questions to review')}
         </h1>
         <p className="text-gray-600 text-base">
-          Questions awaiting reviews. Each question needs up to 3 reviews to be finalized.
+          {t('Questions awaiting reviews. Each question needs up to 3 reviews to be finalized.')}
         </p>
       </div>
 
@@ -216,14 +225,14 @@ const QuestionsReview = () => {
         {/* Filter Section */}
         <div className="flex flex-wrap items-center py-1 px-4 gap-4 border-b">
           <div className="flex items-center gap-2 py-2" >
-            <span className="text-medium-gray font-medium">Category :</span>
+            <span className="text-medium-gray font-medium">{t('Category :')}</span>
             <Select
               variant='borderless'
               allowClear={true}
               options={state.categoriesOptions}
               onChange={(value) => handleSelectChange(value, "selectedCategory")}
               value={state.selectedCategory || undefined}
-              placeholder="All"
+              placeholder={t('All')}
               className="w-36 lg:w-44"
               showSearch
               filterOption={(input, option) =>
@@ -231,7 +240,7 @@ const QuestionsReview = () => {
               }
               optionRender={(option) => (
                 <div key={option.data.value}>
-                  <span>{option.data.label}</span>
+                  <span className={`${direction === 'rtl' ? 'font-arabic' : 'font-primary'}`}>{option.data.label}</span>
                 </div>
               )}
             />
@@ -240,19 +249,21 @@ const QuestionsReview = () => {
           <Divider type='vertical' style={{ height: '30px' }} />
 
           <div className="flex items-center gap-2 py-2">
-            <span className="text-medium-gray font-medium">Difficulty :</span>
+            <span className="text-medium-gray font-medium">{t('Difficulty :')}</span>
             <Select
               allowClear={true}
               variant='borderless'
-              value={state.selectedDifficulty}
+              value={state.selectedDifficulty || undefined}
               onChange={(value) => handleSelectChange(value, "selectedDifficulty")}
               className="w-36 lg:w-44"
-              placeholder="All"
-            >
-              <Option value="easy">Easy</Option>
-              <Option value="medium">Medium</Option>
-              <Option value="hard">Hard</Option>
-            </Select>
+              placeholder={t('All')}
+              options={difficultyOptions}
+              optionRender={(option) => (
+                <div key={option.data.value}>
+                  <span className={`${direction === 'rtl' ? 'font-arabic' : 'font-primary'}`}>{option.data.label}</span>
+                </div>
+              )}
+            />
           </div>
           <Divider type='vertical' style={{ height: '30px' }} />
           <Button
@@ -260,12 +271,11 @@ const QuestionsReview = () => {
             icon={<FilterIcon className='mt-1' />}
             className="h-10 hover:text-black"
             onClick={() => {
-              // When opening modal, ensure UI working copy reflects last applied filters
               setFilters(_reviewFilters);
               setIsReviewFiltersModalOpen(true);
             }}
           >
-            Review Filters
+            {t('Review Filters')}
           </Button>
         </div>
 
@@ -278,7 +288,7 @@ const QuestionsReview = () => {
               {allQuestionsData?.length > 0 ?
                 <CustomTable />
                 :
-                <Empty description="Data Not Found" />
+                <Empty description={t('Data Not Found')} />
               }
             </>
           }
@@ -286,14 +296,16 @@ const QuestionsReview = () => {
       </div>
 
 
-      <Pagination
-        className="mt-5 justify-center text-white"
-        current={params?.page}
-        pageSize={params?.limit}
-        total={pagination?.total}
-        onChange={handlePageChange}
-        showSizeChanger={false}
-      />
+      {allQuestionsData?.length > 0 &&
+        <Pagination
+          className="mt-5 justify-center text-white"
+          current={params?.page}
+          pageSize={params?.limit}
+          total={pagination?.total}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+        />}
+
       {/* Review Filters Modal */}
       <ReviewFiltersModal
         open={isReviewFiltersModalOpen}

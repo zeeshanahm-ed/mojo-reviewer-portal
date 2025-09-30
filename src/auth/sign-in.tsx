@@ -10,8 +10,12 @@ import useSignIn from './core/hooks/use-sign-in';
 import { useAuth } from './core/auth-context';
 import { showErrorMessage, showSuccessMessage } from 'utils/messageUtils';
 import useVerifyToken from './core/hooks/use-verify-token';
+import { useTranslation } from 'react-i18next';
+import { useDirection } from 'hooks/useGetDirection';
 
 function SignIn() {
+  const { t } = useTranslation();
+  const direction = useDirection();
   const { signInMutate, isLoading } = useSignIn();
   const { mutateVerifyToken, isLoading: verifyTokenLoding } = useVerifyToken();
   const { currentUser, saveAuth, setCurrentUser } = useAuth();
@@ -55,11 +59,11 @@ function SignIn() {
   }, [currentUser, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-white relative font-urbanist">
+    <div className={`min-h-screen flex flex-col justify-center items-center bg-white relative ${direction === 'rtl' ? 'font-arabic' : 'font-primary'}`}>
       {/* Logo and title */}
       <div className="mb-10 text-center">
-        <h1 className="text-[80px] font-bold tracking-widest font-secondary">MOJO</h1>
-        <h2 className="text-2xl font-medium -mt-2">Reviewer Portal</h2>
+        <h1 className="text-[70px] font-bold tracking-widest font-secondary">{t("MOJO")}</h1>
+        <h2 className="text-xl font-medium -mt-2">{t("Reviewer Portal")}</h2>
       </div>
 
       {/* Form Card */}
@@ -75,13 +79,13 @@ function SignIn() {
             // label="Email Address"
             name="email"
             rules={[
-              { required: true, message: 'Please input your email!' }
+              { required: true, message: t('Please input your email') }
             ]}
           >
             <Input
               prefix={<MailIcon className='mr-3' />}
               type="email"
-              placeholder="Email Address"
+              placeholder={t("Email Address")}
               className="h-12 py-0"
             />
           </Form.Item>
@@ -89,13 +93,18 @@ function SignIn() {
           <Form.Item
             // label="Password"
             name="password"
-            rules={[
-              { required: true, message: 'Please input your password!' }
+            rules={[{
+              required: true,
+              message: t('Please input your password'),
+            }, {
+              pattern: /^(.{8,})$/,
+              message: t('Password must be at least 8 characters long'),
+            },
             ]}
           >
             <Input.Password
               prefix={<LockIcon className='mr-3' />}
-              placeholder="Password"
+              placeholder={t("Password")}
               className="h-12 py-0"
             />
           </Form.Item>
@@ -106,14 +115,14 @@ function SignIn() {
             type="primary"
             htmlType="submit"
             block
-            className="h-12 bg-black text-white hover:bg-gray-800"
+            className={`h-12 bg-black text-white hover:bg-gray-800`}
           >
-            Login
+            {t("Login")}
           </Button>
 
           <div className="flex justify-end mt-4">
-            <Link to="/auth/forgot-password" className="text-sm">
-              Forgot Password?
+            <Link to="/auth/forgot-password" className={`text-sm ${direction === 'rtl' ? 'font-arabic' : 'font-primary'}`}>
+              {t("Forgot Password?")}
             </Link>
           </div>
         </Form>
@@ -121,7 +130,7 @@ function SignIn() {
 
       {/* Footer */}
       <footer className=" text-center text-base absolute bottom-5">
-        Copyright 2025 MOJO Admin. All rights reserved.
+        {t('Copyright')} 2025 MOJO Admin. {t('All rights reserved')}
       </footer>
     </div>
   );

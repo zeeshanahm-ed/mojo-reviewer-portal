@@ -9,6 +9,8 @@ import WrongIcon from "../../assets/icons/wrong-status-icon.svg?react";
 import RightIcon from "../../assets/icons/right-status-icon.svg?react";
 import AmbiguousIcon from "../../assets/icons/ambigous-status-icon.svg?react";
 import QuestionIcon from "../../assets/icons/question-icon.svg?react"
+import { useTranslation } from 'react-i18next';
+import { useDirection } from 'hooks/useGetDirection';
 
 const { TextArea } = Input;
 
@@ -30,6 +32,8 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
     questionData,
     currentLanguage
 }) => {
+    const { t } = useTranslation();
+    const direction = useDirection();
     const [reviewData, setReviewData] = useState<ReviewData>({
         reviewType: '',
         explanation: ''
@@ -165,7 +169,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
 
         addReviewMutate(body, {
             onSuccess: async () => {
-                showSuccessMessage('Question updated successfully.');
+                showSuccessMessage(t('Review submitted successfully'));
                 getReviewQuestionData();
                 onClose();
             },
@@ -184,7 +188,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                 <div className="flex max-w-[95%] items-center justify-between gap-2">
                     <div className='flex items-center gap-x-5'>
                         <QuestionIcon />
-                        <p className='font-normal text-2xl'>Question</p>
+                        <p className='font-normal text-2xl'>{t("Question")}</p>
                     </div>
                     <div className='flex items-center gap-x-2 font-normal'>
                         <Tooltip title={questionData?.suggestedById}>
@@ -198,7 +202,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
             footer={null}
             centered
             maskClosable={false}
-            className="question-review-modal"
+            className={`question-review-modal ${direction === 'rtl' ? 'font-arabic' : 'font-primary'}`}
             closeIcon={<CloseOutlined className="text-gray-400 hover:text-gray-600" />}
         >
             {isLoading && <FallbackLoader isModal={true} />}
@@ -229,23 +233,21 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                                 </div>
                             ))
                         ) : (
-                            <span className="text-sm text-gray-400">No reviews yet</span>
+                            <span className="text-sm text-gray-400">{t("No reviews yet")}</span>
                         )}
                     </div>
                 </div>
                 <Divider />
                 {/* Question Section */}
                 <div className="mb-6">
-                    <h3 className="text-sm text-gray-700 mb-2">Question</h3>
+                    <h3 className="text-sm text-gray-700 mb-2">{t("Question")}</h3>
                     <p className="text-base font-normal text-gray-900 mb-3">{getQuestionText()}</p>
-
-                    {/* Question Media - Replace with actual media data when available */}
                     {questionData?.mediaUrl && renderMedia(questionData.mediaUrl)}
                 </div>
 
                 {/* Answer Options */}
                 {options.length > 0 && <div className="mb-6">
-                    <h3 className="text-sm text-gray-700 mb-2">Answer Options</h3>
+                    <h3 className="text-sm text-gray-700 mb-2">{t("Answer Options")}</h3>
                     <div className="grid grid-cols-2 gap-3">
                         {options.map((option: string, index: number) => {
                             const isCorrect = option === correctAnswer;
@@ -269,10 +271,8 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                 {/* Answer Explanation */}
                 {questionData?.answerExplanation && (
                     <div className="mb-6">
-                        <h3 className="text-sm text-gray-700 mb-2">Answer Explanation</h3>
+                        <h3 className="text-sm text-gray-700 mb-2">{t("Answer Explanation")}</h3>
                         <p className="text-base font-normal text-gray-900 mb-3">{getAnswerExplanationText()}</p>
-
-                        {/* Answer Explanation Media - Replace with actual media data when available */}
                         {questionData?.answerMediaUrl && renderMedia(questionData.answerMediaUrl)}
                     </div>
                 )}
@@ -283,13 +283,13 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                         onClick={handleShowReviewsOptions}
                         className="h-12 font-normal"
                     >
-                        Review Question
+                        {t("Review Question")}
                     </Button>
                 </div>}
                 {/* Submit Review Section */}
                 {showReviewsOprions ?
                     <>
-                        <h3 className="text-sm text-gray-700 mb-2">Submit Review</h3>
+                        <h3 className="text-sm text-gray-700 mb-2">{t("Submit Review")}</h3>
                         <div className='flex items-center gap-x-5'>
                             <Button
                                 type="default"
@@ -297,7 +297,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                                 onClick={() => handleReviewTypeChange("right")}
                                 className={`h-12 w-28 font-normal text-[#10992D] hover:border-[#10992D] ${reviewData.reviewType === 'right' && "border-[#10992D]"}`}
                             >
-                                Right
+                                {t("Right")}
                             </Button>
                             <Button
                                 type="default"
@@ -305,7 +305,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                                 onClick={() => handleReviewTypeChange("wrong")}
                                 className={`h-12 w-32 font-normal text-[#A20B0B] hover:border-[#A20B0B] ${reviewData.reviewType === 'wrong' && "border-[#A20B0B]"}`}
                             >
-                                Wrong
+                                {t("Wrong")}
                             </Button>
                             <Button
                                 icon={<AmbiguousIcon />}
@@ -313,7 +313,7 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                                 onClick={() => handleReviewTypeChange("ambiguity")}
                                 className={`h-12 w-36 font-normal text-[#DA9526] hover:border-[#DA9526] ${reviewData.reviewType === 'ambiguity' && "border-[#DA9526]"}`}
                             >
-                                Ambiguity
+                                {t("Ambiguity")}
                             </Button>
                             <Divider type='vertical' style={{ height: '30px' }} />
                             <Button
@@ -322,14 +322,14 @@ const QuestionReviewModal: React.FC<QuestionReviewModalProps> = ({ getReviewQues
                                 onClick={handleAddReview}
                                 className="h-12 font-normal"
                             >
-                                Submit
+                                {t("Submit")}
                             </Button>
                         </div>
                         {/* Conditional Textarea for Ambiguity */}
                         {reviewData.reviewType === 'ambiguity' && (
                             <div className="mt-4">
                                 <TextArea
-                                    placeholder="Explain why this question is ambiguous"
+                                    placeholder={t("Explain why this question is ambiguous")}
                                     value={reviewData.explanation}
                                     onChange={handleExplanationChange}
                                     rows={4}

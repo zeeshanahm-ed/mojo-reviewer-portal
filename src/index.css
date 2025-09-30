@@ -7,10 +7,10 @@
 @tailwind utilities;
 
 :root {
-  --family-poppins: 'Poppins', sans-serif;
   --family-primary: 'Product_sans', sans-serif;
-  --family-inter: 'Inter', sans-serif;
   --family-urbanist: 'Urbanist', 'sans-serif';
+  --family-arabic: 'NotoSansArabic', 'sans-serif';
+
 
   --color-primary: #0972C8;
   --color-secondary: #16968F;
@@ -48,6 +48,46 @@ html {
 p {
   font-family: var(--family-secondary);
   line-height: 1.3;
+}
+
+body.font-arabic .ant-form-item-explain-error {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-form-item-explain {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-dropdown-menu-title-content {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-popconfirm-title {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-btn {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-checkbox-label {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-select {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-input {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-col {
+  font-family: var(--family-arabic);
+}
+
+body.font-arabic .ant-radio-label {
+  font-family: var(--family-arabic);
 }
 
 .ant-pagination .ant-pagination-item-active a {

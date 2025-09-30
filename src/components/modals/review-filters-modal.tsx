@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Divider, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
+import { useDirection } from 'hooks/useGetDirection';
 
 interface ReviewFiltersModalProps {
     open: boolean;
@@ -28,7 +30,8 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     onClearFilters,
     filters,
 }) => {
-
+    const { t } = useTranslation();
+    const direction = useDirection();
     const [tempFilters, setTempFilters] = useState<ReviewFilters>({ reviewsCount: [], reviewTypes: [] });
 
     useEffect(() => {
@@ -38,15 +41,15 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
     }, [open, filters]);
 
     const reviewsCountOptions: FilterOption[] = [
-        { label: '0 Reviews', value: '0', count: 3 },
-        { label: '1 Reviews', value: '1', count: 1 },
-        { label: '2 Reviews', value: '2', count: 0 }
+        { label: t('0 Reviews'), value: '0', count: 3 },
+        { label: t('1 Reviews'), value: '1', count: 1 },
+        { label: t('2 Reviews'), value: '2', count: 0 }
     ];
 
     const reviewTypesOptions: FilterOption[] = [
-        { label: 'Right', value: 'Correct', count: 3 },
-        { label: 'Wrong', value: 'Incorrect', count: 1 },
-        { label: 'Ambiguous', value: 'Ambiguous', count: 0 }
+        { label: t('Right'), value: 'Correct', count: 3 },
+        { label: t('Wrong'), value: 'Incorrect', count: 1 },
+        { label: t('Ambiguous'), value: 'Ambiguous', count: 0 }
     ];
 
     const handleCheckboxChange = (type: 'reviewsCount' | 'reviewTypes', value: string, checked: boolean) => {
@@ -75,11 +78,12 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
         <Modal
             open={open}
             onCancel={onClose}
-            title={<p className='font-normal text-2xl'>Review Filters</p>}
+            title={<p className='font-normal text-2xl'>{t('Review Filters')}</p>}
             width={500}
             footer={null}
             centered
             maskClosable={false}
+            className={`${direction === 'rtl' ? 'font-arabic' : 'font-primary'}`}
             closeIcon={<CloseOutlined className="text-gray-400 hover:text-gray-600" />}
         >
             <Divider />
@@ -87,7 +91,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
             <div className="py-2">
                 {/* Reviews Count Section */}
                 <div className="mb-6">
-                    <h3 className="text-sm font-medium text-gray-700 mb-3">Reviews Count</h3>
+                    <h3 className="text-sm font-medium text-gray-700 mb-3">{t('Reviews Count')}</h3>
                     <div className="space-y-3">
                         {reviewsCountOptions.map((option) => (
                             <div key={option.value} className="flex items-center justify-between">
@@ -111,7 +115,7 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
 
                 {/* Review Types Section */}
                 <div className="mb-6">
-                    <h3 className="text-sm font-medium text-gray-700 mb-3">Review Types</h3>
+                    <h3 className="text-sm font-medium text-gray-700 mb-3">{t('Review Types')}</h3>
                     <div className="space-y-3">
                         {reviewTypesOptions.map((option) => (
                             <div key={option.value} className="flex items-center justify-between">
@@ -139,13 +143,13 @@ const ReviewFiltersModal: React.FC<ReviewFiltersModalProps> = ({
                         className="flex items-center text-sm text-gray-600 hover:text-gray-800 transition-colors"
                     >
                         <CloseOutlined className="mr-2 text-xs" />
-                        <span className="underline">Clear Filters</span>
+                        <span className="underline">{t('Clear Filters')}</span>
                     </button> : null}
                 <Button
                     type="primary"
                     onClick={handleApplyFilters}
                 >
-                    Apply Filters
+                    {t('Apply Filters')}
                 </Button>
             </div>
         </Modal>
